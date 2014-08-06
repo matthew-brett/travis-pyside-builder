@@ -1,0 +1,71 @@
+Only in PySide-1.2.2-fixed: popenasync.pyc
+Only in PySide-1.2.2-fixed: pyside_build
+Only in PySide-1.2.2-fixed: pyside_install
+Only in PySide-1.2.2-fixed/pyside_package: PySide
+Only in PySide-1.2.2/pyside_package: PySide.egg-info
+Only in PySide-1.2.2-fixed/pyside_package: pysideuic
+Only in PySide-1.2.2-fixed: qtinfo.pyc
+diff -r -u PySide-1.2.2/sources/pyside/CMakeLists.txt PySide-1.2.2-fixed/sources/pyside/CMakeLists.txt
+--- PySide-1.2.2/sources/pyside/CMakeLists.txt	2014-04-24 11:47:14.000000000 +0000
++++ PySide-1.2.2-fixed/sources/pyside/CMakeLists.txt	2014-08-06 00:06:10.607533887 +0000
+@@ -140,8 +140,7 @@
+ 
+ if (NOT SITE_PACKAGE)
+     execute_process(
+-        COMMAND ${SHIBOKEN_PYTHON_INTERPRETER} -c "from distutils import sysconfig; \\
+-            print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
++        COMMAND ${SHIBOKEN_PYTHON_INTERPRETER} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+         OUTPUT_VARIABLE SITE_PACKAGE
+         OUTPUT_STRIP_TRAILING_WHITESPACE)
+     if (NOT SITE_PACKAGE)
+diff -r -u PySide-1.2.2/sources/pyside-tools/CMakeLists.txt PySide-1.2.2-fixed/sources/pyside-tools/CMakeLists.txt
+--- PySide-1.2.2/sources/pyside-tools/CMakeLists.txt	2014-04-24 11:47:18.000000000 +0000
++++ PySide-1.2.2-fixed/sources/pyside-tools/CMakeLists.txt	2014-08-06 01:08:05.780299024 +0000
+@@ -17,9 +17,7 @@
+ # UIC stuff
+ if (NOT SITE_PACKAGE)
+     execute_process(
+-        COMMAND ${SHIBOKEN_PYTHON_INTERPRETER} -c "from __future__ import print_function; \\
+-            from distutils import sysconfig; \\
+-            print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
++        COMMAND ${SHIBOKEN_PYTHON_INTERPRETER} -c "from __future__ import print_function; from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+         OUTPUT_VARIABLE SITE_PACKAGE
+     OUTPUT_STRIP_TRAILING_WHITESPACE)
+     if (NOT SITE_PACKAGE)
+diff -r -u PySide-1.2.2/sources/shiboken/cmake/Modules/FindPythonInterpWithDebug.cmake PySide-1.2.2-fixed/sources/shiboken/cmake/Modules/FindPythonInterpWithDebug.cmake
+--- PySide-1.2.2/sources/shiboken/cmake/Modules/FindPythonInterpWithDebug.cmake	2014-04-24 11:47:08.000000000 +0000
++++ PySide-1.2.2-fixed/sources/shiboken/cmake/Modules/FindPythonInterpWithDebug.cmake	2014-08-06 00:09:04.366371453 +0000
+@@ -26,17 +26,12 @@
+ 
+ # Detect if the python libs were compiled in debug mode
+ execute_process(
+-    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; \\
+-        print bool(sysconfig.get_config_var('Py_DEBUG'))"
++    COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print bool(sysconfig.get_config_var('Py_DEBUG'))"
+     OUTPUT_VARIABLE PYTHON_WITH_DEBUG
+     OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+ execute_process(
+-    COMMAND ${PYTHON_EXECUTABLE} -c "import sys; \\
+-        from distutils import sysconfig; \\
+-        vr = sys.version_info; \\
+-        suffix = '-dbg' if bool(sysconfig.get_config_var('Py_DEBUG')) else ''; \\
+-        print '-python%d.%d%s' % (vr[0], vr[1], suffix)"
++    COMMAND ${PYTHON_EXECUTABLE} -c "import sys; from distutils import sysconfig; vr = sys.version_info;  suffix = '-dbg' if bool(sysconfig.get_config_var('Py_DEBUG')) else ''; print '-python%d.%d%s' % (vr[0], vr[1], suffix)"
+     OUTPUT_VARIABLE PYTHON_SUFFIX
+     OUTPUT_STRIP_TRAILING_WHITESPACE)
+ 
+diff -r -u PySide-1.2.2/sources/shiboken/CMakeLists.txt PySide-1.2.2-fixed/sources/shiboken/CMakeLists.txt
+--- PySide-1.2.2/sources/shiboken/CMakeLists.txt	2014-04-24 11:47:20.000000000 +0000
++++ PySide-1.2.2-fixed/sources/shiboken/CMakeLists.txt	2014-08-06 00:07:31.580006963 +0000
+@@ -35,8 +35,7 @@
+ 
+ if (NOT PYTHON_SITE_PACKAGES)
+     execute_process(
+-        COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; \\
+-            print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
++        COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(1,0,prefix='${CMAKE_INSTALL_PREFIX}'))"
+         OUTPUT_VARIABLE PYTHON_SITE_PACKAGES
+         OUTPUT_STRIP_TRAILING_WHITESPACE)
+     if (NOT PYTHON_SITE_PACKAGES)
+Only in PySide-1.2.2-fixed: utils.pyc

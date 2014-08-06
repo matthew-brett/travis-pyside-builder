@@ -1,0 +1,40 @@
+# vim ft=yaml
+# Build pyside wheels for the travis worker
+language: python
+python:
+    - 2.6
+    - 2.7
+    - 3.2
+    - 3.3
+    - 3.4
+install:
+    - WHEELHOUSE=$PWD/wheelhouse
+    - PYSIDE_VERSION=1.2.2
+    - PYSIDE_DIR=PySide-${PYSIDE_VERSION}
+    - PYSIDE_TGZ=PySide-${PYSIDE_VERSION}.tar.gz
+    - pip install wheel
+    # PySide dependencies from http://pyside.readthedocs.org/en/latest/building/linux.html
+    - sudo apt-get install cmake libqt4-dev libphonon-dev libxml2-dev libxslt1-dev qtmobility-dev
+    - curl -O https://pypi.python.org/packages/source/P/PySide/${PYSIDE_TGZ}
+    - tar xf $PYSIDE_TGZ
+    - patch -p0 < cmake_python.patch
+    - cd $PYSIDE_DIR
+    - python setup.py bdist_wheel
+    - cp dist/*.whl $WHEELHOUSE
+    - cp pyside_postinstall.py $WHEELHOUSE
+    - cd ..
+script:
+    - pip install -f $WHEELHOUSE pyside
+    # Post install needed for pyside wheel
+    - python $WHEELHOUSE/pyside_postinstall.py -install
+    # Smoke test
+    - python -c "from PySide.QtGui import *"
+before_deploy: cd $WHEELHOUSE
+deploy:
+  provider: cloudfiles
+  username: travis-worker
+  api_key:
+      secure: "ilWZL8wbTP/DNDMQgIsD2UfFOwofhEVqjiejyfM+/J9HcbKpzB08G5a1HIlT/mN1bmbVwXZLhhGGUg7U2XHdpBgCW3JEN8bRVj4MnIaG6Uu+cobPyV85YBmhN7tZPHhDoW2BHqi6wP96PdSCCVGD6S86/IGhSnUDLL7IG3VdgIw="
+  region: ORD
+  container: wheels
+  skip_cleanup: true
