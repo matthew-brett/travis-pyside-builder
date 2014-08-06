@@ -8,7 +8,8 @@ python:
     - 3.3
     - 3.4
 install:
-    - WHEELHOUSE=$HOME/wheelhouse
+    - WHEELHOUSE=$PWD/wheelhouse
+    - mkdir $WHEELHOUSE
     - PYSIDE_VERSION=1.2.2
     - PYSIDE_DIR=PySide-${PYSIDE_VERSION}
     - PYSIDE_TGZ=PySide-${PYSIDE_VERSION}.tar.gz
