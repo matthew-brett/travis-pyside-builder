@@ -8,13 +8,15 @@ python:
     - 3.3
     - 3.4
 install:
-    - WHEELHOUSE=$PWD/wheelhouse
+    - WHEELHOUSE=$HOME/wheelhouse
     - PYSIDE_VERSION=1.2.2
     - PYSIDE_DIR=PySide-${PYSIDE_VERSION}
     - PYSIDE_TGZ=PySide-${PYSIDE_VERSION}.tar.gz
     - pip install wheel
     # PySide dependencies from http://pyside.readthedocs.org/en/latest/building/linux.html
-    - sudo apt-get install cmake libqt4-dev libphonon-dev libxml2-dev libxslt1-dev qtmobility-dev
+    # Excluding libphonon-dev qtmobility-dev because the might not be useful
+    # on travis
+    - sudo apt-get install cmake libqt4-dev libxml2-dev libxslt1-dev
     - curl -O https://pypi.python.org/packages/source/P/PySide/${PYSIDE_TGZ}
     - tar xf $PYSIDE_TGZ
     - patch -p0 < cmake_python.patch
@@ -22,9 +24,11 @@ install:
     - python setup.py bdist_wheel
     - cp dist/*.whl $WHEELHOUSE
     - cp pyside_postinstall.py $WHEELHOUSE
+    - echo $WHEELHOUSE
+    - ls $WHEELHOUSE
     - cd ..
 script:
-    - pip install -f $WHEELHOUSE pyside
+    - pip install -v -f $WHEELHOUSE --no-index pyside
     # Post install needed for pyside wheel
     - python $WHEELHOUSE/pyside_postinstall.py -install
     # Smoke test
