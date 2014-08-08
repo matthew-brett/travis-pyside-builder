@@ -41,5 +41,5 @@ deploy:
   api_key:
       secure: "PGc66yxRIZoEze+KNhHHsd++tCkWKPdzWQbIrBSL0rO68Q0yb8lAmYjr2jEaqfXdpym5yk6wGgxZoO9dEkvSJGzNe3UeFyaXMpiqBNbVkUD0xxyL8pgsHVf7LpTC1O/drEAKad14MKFMKgno5c0cD8BSyEX2EsuraBBmCwhbkhg="
   region: ORD
-  container: wheels
+  container: travis_wheels
   skip_cleanup: true
